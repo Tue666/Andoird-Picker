@@ -51,7 +51,7 @@ const TimeClock = (props: TimeClockProps): React.JSX.Element => {
 							styles.sector,
 							{
 								transform: [{ translateX: (defaultNumberSize / 2) * -1 }, { rotate: `${value * rotateDeg}deg` }],
-								zIndex: visible ? value : 1,
+								zIndex: visible ? value + 2 : 1,
 							},
 						]}
 					>

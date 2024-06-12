@@ -15,7 +15,7 @@ interface TimePickerProps {
 	visible: boolean;
 	onCloseModal: () => void;
 	time?: IPicker.TimePicker;
-	onChangeTimePicker?: (time: Omit<IPicker.TimePicker, 'suffix'>) => void;
+	onChangeTimePicker?: (time: IPicker.TimePicker) => void;
 }
 
 const TimePicker = (props: TimePickerProps): React.JSX.Element => {

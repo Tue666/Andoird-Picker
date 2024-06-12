@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Picker } from '../components';
-import { TimePicker } from '../components/modals';
+import { DatePicker, TimePicker } from '../components/modals';
+import { ConstantConfig } from '../config';
 import { useTheme } from '../hooks';
 import { IPicker } from '../interfaces';
 import { globalStyles } from '../styles';
+import { TimeUtil } from '../utils';
+
+const { BOX } = ConstantConfig;
 
 const MainScreen = (): React.JSX.Element => {
+	const [date, setDate] = useState<IPicker.DatePicker | undefined>(undefined);
 	const [time, setTime] = useState<IPicker.TimePicker | undefined>(undefined);
 	const { background } = useTheme();
 
-	const onChangeTimePicker = (time: Omit<IPicker.TimePicker, 'suffix'>) => {
-		setTime({
-			...time,
-			suffix: 'AM',
-		});
+	const onChangeDatePicker = (date: IPicker.DatePicker) => {
+		setDate(date);
+	};
+	const onChangeTimePicker = (time: IPicker.TimePicker) => {
+		setTime(time);
 	};
 	return (
-		<View style={[globalStyles.container, { backgroundColor: background }]}>
+		<View style={[globalStyles.container, styles.container, { backgroundColor: background }]}>
 			<Picker
-				title={`${time?.hour ?? 'NA'}:${time?.minute ?? 'NA'} ${time?.suffix ?? 'NA'}`}
+				title={''}
+				placeholder="Date mobile"
+				modal={DatePicker}
+				date={date}
+				onChangeDatePicker={onChangeDatePicker}
+			/>
+			<Picker
+				title={TimeUtil.toTimePickerText(time)}
+				placeholder="Time"
+				icon="clock-o"
 				modal={TimePicker}
 				time={time}
 				onChangeTimePicker={onChangeTimePicker}
@@ -27,5 +41,11 @@ const MainScreen = (): React.JSX.Element => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		padding: BOX.PADDING * 2,
+	},
+});
 
 export default MainScreen;
