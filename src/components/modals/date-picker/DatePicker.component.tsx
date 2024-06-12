@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConstantConfig } from '../../../config';
@@ -15,7 +15,7 @@ const { DATE_PICKER } = MODAL;
 interface DatePickerProps {
 	visible: boolean;
 	onCloseModal: () => void;
-	date: IPicker.DatePicker;
+	date?: IPicker.DatePicker;
 	onChangeDatePicker?: (time: IPicker.DatePicker) => void;
 }
 
@@ -28,6 +28,7 @@ const DatePicker = (props: DatePickerProps): React.JSX.Element => {
 		month: date?.month ?? now.getMonth() + 1, // Function returns 0-11 corresponding to 12 months
 		year: date?.year ?? now.getFullYear(),
 	});
+	const dateRef = useRef(selectingDate); // Keep track the selected day
 	const { paper, text, outline } = useTheme();
 	const disablePrev = TimeUtil.isMinAvailableYear(selectingDate.month, selectingDate.year);
 	const disableNext = TimeUtil.isMaxAvailableYear(selectingDate.month, selectingDate.year);
@@ -37,6 +38,10 @@ const DatePicker = (props: DatePickerProps): React.JSX.Element => {
 	};
 	const onSelectDate = (date: Partial<IPicker.DatePicker>) => {
 		setSelectingDate({ ...selectingDate, ...date });
+	};
+	const onSelectDay = (day: IPicker.DatePicker['day']) => {
+		onChangeDatePicker && onChangeDatePicker({ ...selectingDate, day });
+		onCloseModal();
 	};
 	return (
 		<Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onCloseModal}>
@@ -82,8 +87,16 @@ const DatePicker = (props: DatePickerProps): React.JSX.Element => {
 								</View>
 							)}
 						</View>
-						{!yearVisible && <DaySelect date={selectingDate} />}
-						{yearVisible && <YearSelect year={selectingDate.year} />}
+						{!yearVisible && (
+							<DaySelect date={selectingDate} dateRef={dateRef.current} onSelectDay={onSelectDay} />
+						)}
+						{yearVisible && (
+							<YearSelect
+								year={selectingDate.year}
+								onToggleVisibleYear={onPressChangeYearVisible}
+								onSelectDate={onSelectDate}
+							/>
+						)}
 					</View>
 				</TouchableOpacity>
 			</TouchableOpacity>

@@ -94,10 +94,14 @@ class TimeUtil {
 		const daysInMonth = TimeUtil.daysInMonth(month, year);
 		const firstDayOfMonth = TimeUtil.firstDayOfMonth(month, year);
 
-		return [
-			...Array(firstDayOfMonth).fill('-'),
-			...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-		];
+		return [...Array(firstDayOfMonth).fill(0), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+	}
+
+	static toDatePickerText(date?: IPicker.DatePicker): string {
+		if (!date) return '';
+
+		const { day, month, year } = date;
+		return `${NumberUtil.toZeroPrefix(day)}/${NumberUtil.toZeroPrefix(month)}/${year}`;
 	}
 
 	static toTimePickerText(time?: IPicker.TimePicker): string {

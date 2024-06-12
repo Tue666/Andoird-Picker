@@ -20,12 +20,13 @@ interface NumberProps extends TouchableOpacityProps {
 	};
 	size?: number;
 	isSelected?: boolean;
+	transparent?: boolean;
 	textStyle?: TextProps['style'];
 	value?: string | number;
 }
 
 const Number = (props: NumberProps): React.JSX.Element => {
-	const { intend, size, isSelected, value, style, textStyle, ...rest } = props;
+	const { intend, size, isSelected, transparent, value, style, textStyle, ...rest } = props;
 	const { background, text, primary } = useTheme();
 	// Size of number will depend on whether or not you intend to take up some space when render UI
 	// If "intend" is provided, the size will be calculated to display in the correct number on a horizontal row
@@ -43,20 +44,24 @@ const Number = (props: NumberProps): React.JSX.Element => {
 			style={[
 				globalStyles.center,
 				styles.container,
-				{ width: defaultSize, height: defaultSize, backgroundColor: bgColor },
+				{ width: defaultSize, height: defaultSize, backgroundColor: transparent ? 'transparent' : bgColor },
 				style,
 			]}
 			{...rest}
 		>
-			{value !== undefined && <Text style={[{ color: textColor }, textStyle]}>{value}</Text>}
-			{value === undefined && isSelected && <View style={[styles.dot, { backgroundColor: text }]} />}
+			{!transparent && value !== undefined && (
+				<Text style={[{ color: textColor }, textStyle]}>{value}</Text>
+			)}
+			{!transparent && value === undefined && isSelected && (
+				<View style={[styles.dot, { backgroundColor: text }]} />
+			)}
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		borderRadius: 99,
+		borderRadius: 999,
 		margin: NUMBER.MARGIN,
 	},
 	dot: {

@@ -12,11 +12,14 @@ const { DATE_PICKER } = MODAL;
 
 interface DaySelectProps {
 	date: IPicker.DatePicker;
+	dateRef: IPicker.DatePicker;
+	onSelectDay: (value: IPicker.DatePicker['day']) => void;
 }
 
 const DaySelect = (props: DaySelectProps): React.JSX.Element => {
-	const { date } = props;
+	const { date, dateRef, onSelectDay } = props;
 	const { outline } = useTheme();
+	const isPreview = date.month !== dateRef.month || date.year !== dateRef.year;
 	const intendNumber = {
 		containerWidth: DATE_PICKER.WIDTH - (BOX.PADDING * 2 + DATE_PICKER.PADDING * 2),
 		rowSize: DAYS_IN_WEEK,
@@ -41,7 +44,16 @@ const DaySelect = (props: DaySelectProps): React.JSX.Element => {
 			})}
 			<View style={[globalStyles.fw, styles.gap]} />
 			{TimeUtil.generateCalendar(date).map((day, index) => {
-				return <Number key={index} intend={intendNumber} isSelected={day === date.day} value={day} />;
+				return (
+					<Number
+						key={index}
+						intend={intendNumber}
+						isSelected={!isPreview && day === date.day}
+						transparent={day === 0}
+						value={day}
+						onPress={() => onSelectDay(day)}
+					/>
+				);
 			})}
 		</View>
 	);

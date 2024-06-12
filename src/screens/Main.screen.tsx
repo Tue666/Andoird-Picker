@@ -24,7 +24,7 @@ const MainScreen = (): React.JSX.Element => {
 	return (
 		<View style={[globalStyles.container, styles.container, { backgroundColor: background }]}>
 			<Picker
-				title={''}
+				title={TimeUtil.toDatePickerText(date)}
 				placeholder="Date mobile"
 				modal={DatePicker}
 				date={date}
