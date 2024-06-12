@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TextProps, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	TextProps,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	View,
+} from 'react-native';
 import { ConstantConfig } from '../config';
 import { useTheme } from '../hooks';
 import { globalStyles } from '../styles';
@@ -14,7 +21,7 @@ interface NumberProps extends TouchableOpacityProps {
 	size?: number;
 	isSelected?: boolean;
 	textStyle?: TextProps['style'];
-	value: string | number;
+	value?: string | number;
 }
 
 const Number = (props: NumberProps): React.JSX.Element => {
@@ -41,15 +48,21 @@ const Number = (props: NumberProps): React.JSX.Element => {
 			]}
 			{...rest}
 		>
-			<Text style={[{ color: textColor }, textStyle]}>{value}</Text>
+			{value !== undefined && <Text style={[{ color: textColor }, textStyle]}>{value}</Text>}
+			{value === undefined && isSelected && <View style={[styles.dot, { backgroundColor: text }]} />}
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		borderRadius: 50,
+		borderRadius: 99,
 		margin: NUMBER.MARGIN,
+	},
+	dot: {
+		width: NUMBER.DOT_SIZE,
+		height: NUMBER.DOT_SIZE,
+		borderRadius: NUMBER.DOT_SIZE / 2,
 	},
 });
 

@@ -10,6 +10,7 @@ export const BOX = {
 
 export const NUMBER = {
 	SIZE: 40,
+	DOT_SIZE: 4,
 	MARGIN: 3,
 };
 
@@ -33,5 +34,10 @@ export const MODAL = {
 	},
 	TIME_PICKER: {
 		WIDTH: Dimensions.get('window').width - 50,
+		CLOCK_SIZE: 280,
+		DOT_SIZE: 6,
+		LINE_SIZE: 4,
+		VISIBLE_DIVISOR: 5,
+		INVISIBLE_DOT_SIZE: 4,
 	},
 };

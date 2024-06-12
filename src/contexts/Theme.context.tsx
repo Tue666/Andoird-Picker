@@ -11,6 +11,10 @@ interface ThemeState {
 		main?: string;
 		contrastText?: string;
 	};
+	secondary?: {
+		main?: string;
+		contrastText?: string;
+	};
 }
 
 interface ThemeMethod {

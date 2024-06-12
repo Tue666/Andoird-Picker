@@ -1,21 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { ConstantConfig } from '../../../config';
+import { IPicker } from '../../../interfaces';
+import TimeClock from '../../TimeClock.component';
 
-const { BOX } = ConstantConfig;
+interface HourSelectProps {
+	hour: IPicker.TimePicker['hour'];
+	onSelectMode: (mode: IPicker.TimeMode) => void;
+	onSelectTime: (time: Partial<IPicker.TimePicker>) => void;
+}
 
-const HourSelect = (): React.JSX.Element => {
-	return (
-		<View style={[styles.container]}>
-			<Text>Hello</Text>
-		</View>
-	);
+const HourSelect = (props: HourSelectProps): React.JSX.Element => {
+	const { hour, onSelectMode, onSelectTime } = props;
+	const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+	const hoursWheel = hours.map((hour) => ({ value: hour, subValue: hour === 12 ? 0 : hour + 12 }));
+
+	const onSelectValue = (value: IPicker.TimePicker['hour']) => {
+		onSelectTime({ hour: value });
+		onSelectMode('minute');
+	};
+	return <TimeClock selected={hour} wheel={hoursWheel} zeroPrefix={false} callback={onSelectValue} />;
 };
-
-const styles = StyleSheet.create({
-	container: {
-		marginVertical: BOX.MARGIN,
-	},
-});
 
 export default HourSelect;

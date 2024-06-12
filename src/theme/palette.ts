@@ -3,8 +3,14 @@ const PRIMARY = {
 	contrastText: '#040409',
 };
 
+const SECONDARY = {
+	main: '#DA4336',
+	contrastText: '#FDF8F7',
+};
+
 const COMMON = {
 	primary: { ...PRIMARY },
+	secondary: { ...SECONDARY },
 };
 
 const palette = {
@@ -12,7 +18,7 @@ const palette = {
 		background: '#111010',
 		paper: '#2F2F2F',
 		text: '#DDDDDD',
-		outline: '#CACBCB',
+		outline: '#ADADAD',
 		...COMMON,
 	},
 };
