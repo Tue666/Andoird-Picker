@@ -15,17 +15,27 @@ const MainScreen = (): React.JSX.Element => {
 	const [time, setTime] = useState<IPicker.TimePicker | undefined>(undefined);
 	const { background } = useTheme();
 
-	const onChangeDatePicker = (date: IPicker.DatePicker) => {
+	const onChangeDatePicker = (date?: IPicker.DatePicker) => {
 		setDate(date);
 	};
-	const onChangeTimePicker = (time: IPicker.TimePicker) => {
+	const onClearDatePicker = () => {
+		if (!date) return;
+		setDate(undefined);
+	};
+	const onChangeTimePicker = (time?: IPicker.TimePicker) => {
 		setTime(time);
+	};
+	const onClearTimePicker = () => {
+		if (!time) return;
+		setTime(undefined);
 	};
 	return (
 		<View style={[globalStyles.container, styles.container, { backgroundColor: background }]}>
 			<Picker
 				title={TimeUtil.toDatePickerText(date)}
 				placeholder="Date mobile"
+				clearText
+				onClearText={onClearDatePicker}
 				modal={DatePicker}
 				date={date}
 				onChangeDatePicker={onChangeDatePicker}
@@ -34,6 +44,8 @@ const MainScreen = (): React.JSX.Element => {
 				title={TimeUtil.toTimePickerText(time)}
 				placeholder="Time"
 				icon="clock-o"
+				clearText
+				onClearText={onClearTimePicker}
 				modal={TimePicker}
 				time={time}
 				onChangeTimePicker={onChangeTimePicker}
